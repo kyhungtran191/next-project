@@ -76,7 +76,6 @@ export default function App(props: ExtendedAppProps) {
   const { settings } = useSettings()
 
   // Variables
-  const contentHeightFixed = Component.contentHeightFixed ?? false
   const getLayout = Component.getLayout ?? (page => <>{page}</>)
 
   const setConfig = Component.setConfig ?? undefined
