@@ -28,12 +28,19 @@ const schema = yup
   .object()
   .shape({
     email: yup.string().required().matches(EMAIL_REG, 'Email is not valid'),
-    password: yup.string().required().matches(PASSWORD_REG, 'Password must contain character, special character,number')
+    password: yup
+      .string()
+      .required()
+      .matches(PASSWORD_REG, 'Password must contain character, special character,number'),
+    confirm_password: yup
+      .string()
+      .required()
+      .matches(PASSWORD_REG, 'Confirm password must contain character, special')
+      .oneOf([yup.ref('password')], 'Confirm Password not match')
   })
   .required()
 
-const LoginPage: NextPage<TProps> = () => {
-  const [rememberMe, setIsRememberMe] = useState(true)
+const SignUpPage: NextPage<TProps> = () => {
   const theme = useTheme()
   const {
     register,
@@ -43,12 +50,13 @@ const LoginPage: NextPage<TProps> = () => {
   } = useForm({
     defaultValues: {
       email: '',
-      password: ''
+      password: '',
+      confirm_password: ''
     },
     mode: 'onBlur',
     resolver: yupResolver(schema)
   })
-  const onSubmit = (data: { email: string; password: string }) => {
+  const onSubmit = (data: { email: string; password: string; confirm_password: string }) => {
     console.log(data)
   }
   return (
@@ -56,7 +64,7 @@ const LoginPage: NextPage<TProps> = () => {
       <Box
         sx={{
           height: '100vh',
-          minWidth: '100vw',
+          width: '100vw',
           backgroundColor: theme.palette.background.paper,
           display: 'flex',
           alignItems: 'center',
@@ -74,7 +82,7 @@ const LoginPage: NextPage<TProps> = () => {
             }}
           >
             <Typography component='h1' variant='h5'>
-              Sign in
+              Sign Up
             </Typography>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete='off' noValidate>
               <Box sx={{ mt: 2, width: '300px' }}>
@@ -117,31 +125,35 @@ const LoginPage: NextPage<TProps> = () => {
                 />
                 {errors.password && <Typography color={'red'}>{errors.password.message}</Typography>}
               </Box>
-              <Box
-                sx={{ mt: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '300px' }}
-              >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      value='remember'
-                      color='primary'
-                      checked={rememberMe}
-                      onChange={e => setIsRememberMe(e.target.checked)}
+              <Box sx={{ mt: 2, width: '300px' }}>
+                <Controller
+                  name='confirm_password'
+                  control={control}
+                  render={({ field }) => (
+                    <CustomTextField
+                      required
+                      fullWidth
+                      id='confirm_password'
+                      label='Confirm_password*'
+                      placeholder='Confirm_password'
+                      autoFocus
+                      type='password'
+                      error={Boolean(errors.confirm_password)}
+                      {...field}
                     />
-                  }
-                  label='Remember me'
+                  )}
                 />
-                <Link href='#'>Forgot password?</Link>
+                {errors.confirm_password && <Typography color={'red'}>{errors.confirm_password.message}</Typography>}
               </Box>
               <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-                Sign In
+                Sign Up
               </Button>
               <Grid container>
                 <Grid item xs>
-                  Don't have an account?{' '}
+                  Have account?{' '}
                 </Grid>
                 <Grid item>
-                  <Link href='/signup'>Sign up</Link>
+                  <Link href='/login'>Login</Link>
                 </Grid>
               </Grid>
               <Typography sx={{ textAlign: 'center', mt: 2, mb: 2 }}>Or</Typography>
@@ -160,4 +172,4 @@ const LoginPage: NextPage<TProps> = () => {
     </Box>
   )
 }
-export default LoginPage
+export default SignUpPage
