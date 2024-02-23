@@ -1,7 +1,14 @@
+/* eslint-disable newline-before-return */
 'use client'
+import { Box, useTheme } from '@mui/material'
 import Head from 'next/head'
+import CustomTextField from 'src/components/text-field'
+import { useSettings } from 'src/hooks/useSettings'
 
 export default function Home() {
+  // const theme = useTheme()
+  const settings = useSettings()
+  console.log(settings)
   return (
     <>
       <Head>
@@ -10,7 +17,11 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <h1>Hello world!</h1>
+      <Box sx={{ margin: 6, width: '200px' }}>
+        <CustomTextField id='outlined-multiline-flexible' label='Multiline'>
+          1
+        </CustomTextField>
+      </Box>
     </>
   )
 }
