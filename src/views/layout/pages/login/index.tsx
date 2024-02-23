@@ -19,10 +19,12 @@ import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { EMAIL_REG, PASSWORD_REG } from 'src/configs/regex'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Image from 'next/image'
 import FacebookSVG from '/public/svgs/facebook.svg'
 import GoogleSVG from '/public/svgs/google.svg'
+import { AuthContext } from 'src/contexts/AuthContext'
+import { useAuth } from 'src/hooks/useAuth'
 type TProps = {}
 const schema = yup
   .object()
@@ -31,12 +33,11 @@ const schema = yup
     password: yup.string().required().matches(PASSWORD_REG, 'Password must contain character, special character,number')
   })
   .required()
-
 const LoginPage: NextPage<TProps> = () => {
   const [rememberMe, setIsRememberMe] = useState(true)
+  const { login } = useAuth()
   const theme = useTheme()
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors }
@@ -49,14 +50,14 @@ const LoginPage: NextPage<TProps> = () => {
     resolver: yupResolver(schema)
   })
   const onSubmit = (data: { email: string; password: string }) => {
-    console.log(data)
+    login({ ...data, rememberMe })
   }
   return (
     <Box component='main' maxWidth='xs'>
       <Box
         sx={{
           height: '100vh',
-          minWidth: '100vw',
+          width: '100%',
           backgroundColor: theme.palette.background.paper,
           display: 'flex',
           alignItems: 'center',
@@ -67,7 +68,7 @@ const LoginPage: NextPage<TProps> = () => {
           <CssBaseline></CssBaseline>
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 2,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center'
