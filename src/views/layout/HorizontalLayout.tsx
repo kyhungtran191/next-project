@@ -33,28 +33,40 @@ const AppBar = styled(MuiAppBar, {
   })
 }))
 
-export default function HorizontalLayout({ open, toggleDrawer }: { open: boolean; toggleDrawer: () => void }) {
+export default function HorizontalLayout({
+  open,
+  toggleDrawer,
+  isHideMenu = false
+}: {
+  open: boolean
+  toggleDrawer: () => void
+  isHideMenu: boolean
+}) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position='absolute' open={open}>
         <Toolbar
           sx={{
-            pr: '24px' // keep right padding when drawer closed
+            pr: '30px',
+            margin: '0 20px' // keep right padding when drawer closed
           }}
         >
-          <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='open drawer'
-            onClick={toggleDrawer}
-            sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' })
-            }}
-          >
-            <IconifyIcon icon={'ic:sharp-menu'} />
-          </IconButton>
+          {!isHideMenu && (
+            <IconButton
+              edge='start'
+              color='inherit'
+              aria-label='open drawer'
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: '36px',
+                ...(open && { display: 'none' })
+              }}
+            >
+              <IconifyIcon icon={'ic:sharp-menu'} />
+            </IconButton>
+          )}
+
           <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
             Dashboard
           </Typography>

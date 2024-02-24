@@ -4,8 +4,9 @@ import { Box, useTheme } from '@mui/material'
 import Head from 'next/head'
 import CustomTextField from 'src/components/text-field'
 import { useSettings } from 'src/hooks/useSettings'
+import LayoutNotApp from 'src/views/layout/LayoutNotApp'
 
-export default function Home() {
+const Home = () => {
   // const theme = useTheme()
   const settings = useSettings()
   console.log(settings)
@@ -20,3 +21,5 @@ export default function Home() {
     </>
   )
 }
+export default Home
+Home.getLayout = (page: React.ReactNode) => <LayoutNotApp>{page}</LayoutNotApp>
