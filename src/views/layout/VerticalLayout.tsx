@@ -1,14 +1,12 @@
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import MuiDrawer from '@mui/material/Drawer'
-import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 
-import { mainListItems, secondaryListItems } from './listItem'
 import IconifyIcon from 'src/components/Icon'
+import ListVerticalLayout from './ListVerticalLayout'
 
 const drawerWidth: number = 240
 
@@ -54,11 +52,7 @@ const VerticalLayout = ({ open, toggleDrawer }: { open: boolean; toggleDrawer: (
         </IconButton>
       </Toolbar>
       <Divider />
-      <List component='nav'>
-        {mainListItems}
-        <Divider sx={{ my: 1 }} />
-        {secondaryListItems}
-      </List>
+      <ListVerticalLayout></ListVerticalLayout>
     </Drawer>
   )
 }
