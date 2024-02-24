@@ -3,9 +3,11 @@
 import Head from 'next/head'
 import { NextPage } from 'next'
 import LoginPage from 'src/views/layout/pages/login'
+import BlankLayout from 'src/views/layout/BlankLayout'
 type TProps = {}
 const Login: NextPage<TProps> = () => {
-  // const theme = useTheme()
-  return <LoginPage></LoginPage>
+  return <LoginPage />
 }
 export default Login
+
+Login.getLayout = (page: React.ReactNode) => <BlankLayout>{page}</BlankLayout>

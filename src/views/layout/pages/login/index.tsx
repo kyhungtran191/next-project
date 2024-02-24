@@ -23,8 +23,8 @@ import { useContext, useState } from 'react'
 import Image from 'next/image'
 import FacebookSVG from '/public/svgs/facebook.svg'
 import GoogleSVG from '/public/svgs/google.svg'
-import { AuthContext } from 'src/contexts/AuthContext'
 import { useAuth } from 'src/hooks/useAuth'
+import BlankLayout from '../../BlankLayout'
 type TProps = {}
 const schema = yup
   .object()
@@ -162,3 +162,4 @@ const LoginPage: NextPage<TProps> = () => {
   )
 }
 export default LoginPage
+

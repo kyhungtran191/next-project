@@ -7,6 +7,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import Badge from '@mui/material/Badge'
+import IconifyIcon from 'src/components/Icon'
 
 const drawerWidth: number = 240
 
@@ -51,12 +52,15 @@ export default function HorizontalLayout({ open, toggleDrawer }: { open: boolean
               marginRight: '36px',
               ...(open && { display: 'none' })
             }}
-          ></IconButton>
+          >
+            <IconifyIcon icon={'ic:sharp-menu'} />
+          </IconButton>
           <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
             Dashboard
           </Typography>
           <IconButton color='inherit'>
             <Badge badgeContent={4} color='secondary'></Badge>
+            <IconifyIcon icon={'mingcute:notification-fill'} />
           </IconButton>
         </Toolbar>
       </AppBar>
