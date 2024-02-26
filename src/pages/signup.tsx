@@ -9,3 +9,4 @@ const SignUp: NextPage<IProps> = () => {
 export default SignUp
 
 SignUp.getLayout = (page: React.ReactNode) => <BlankLayout>{page}</BlankLayout>
+SignUp.guestGuard = true
