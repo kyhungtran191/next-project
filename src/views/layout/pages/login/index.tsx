@@ -43,8 +43,8 @@ const LoginPage: NextPage<TProps> = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      email: '',
-      password: ''
+      email: 'admin@gmail.com',
+      password: '123456789Kha@'
     },
     mode: 'onBlur',
     resolver: yupResolver(schema)
@@ -162,4 +162,3 @@ const LoginPage: NextPage<TProps> = () => {
   )
 }
 export default LoginPage
-
