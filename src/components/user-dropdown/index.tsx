@@ -14,6 +14,7 @@ import React from 'react'
 import IconifyIcon from '../Icon'
 import { useAuth } from 'src/hooks/useAuth'
 import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
 
 type TProps = {}
 const UserDropdown = (props: TProps) => {
@@ -30,11 +31,11 @@ const UserDropdown = (props: TProps) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
+  const { t } = useTranslation()
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-        <Tooltip title='Account settings'>
+        <Tooltip title={t('Account')}>
           <IconButton
             onClick={handleClick}
             size='small'

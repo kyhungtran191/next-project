@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import Box from '@mui/material/Box'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
-import Badge from '@mui/material/Badge'
 import IconifyIcon from 'src/components/Icon'
 import UserDropdown from 'src/components/user-dropdown'
+import LanguageDropdown from 'src/components/languge-dropdown'
 
 const drawerWidth: number = 240
 
@@ -71,11 +71,8 @@ export default function HorizontalLayout({
           <Typography component='h1' variant='h6' color='inherit' noWrap sx={{ flexGrow: 1 }}>
             Dashboard
           </Typography>
+          <LanguageDropdown></LanguageDropdown>
           <UserDropdown></UserDropdown>
-          {/* <IconButton color='inherit'>
-            <Badge badgeContent={4} color='secondary'></Badge>
-            <IconifyIcon icon={'mingcute:notification-fill'} />
-          </IconButton> */}
         </Toolbar>
       </AppBar>
     </Box>
