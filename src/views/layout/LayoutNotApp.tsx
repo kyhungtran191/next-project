@@ -6,10 +6,11 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 import VerticalLayout from './VerticalLayout'
 import HorizontalLayout from './HorizontalLayout'
+import { useTheme } from '@mui/material'
 
 export default function LayoutNotApp({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = React.useState(true)
-
+  const theme = useTheme()
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -25,7 +26,9 @@ export default function LayoutNotApp({ children }: { children: React.ReactNode }
         }}
       >
         <Toolbar />
-        <Container>{children}</Container>
+        <Container sx={{ mt: 4, mb: 4, backgroundColor: theme.palette.background.paper, width: '100vw' }}>
+          {children}
+        </Container>
       </Box>
     </Box>
   )
