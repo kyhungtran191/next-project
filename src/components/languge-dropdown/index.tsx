@@ -3,7 +3,7 @@
 import React from 'react'
 import IconifyIcon from '../Icon'
 import { useAuth } from 'src/hooks/useAuth'
-import { Button, IconButton, Popover, Typography, styled } from '@mui/material'
+import { IconButton, Menu, MenuItem, styled } from '@mui/material'
 import { Box } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { LANGUAGE_OPTIONS } from 'src/configs/i18n'
@@ -47,21 +47,51 @@ const LanguageDropdown = (props: TProps) => {
       <IconButton onClick={handleOpen}>
         <IconifyIcon icon='ic:baseline-translate'></IconifyIcon>
       </IconButton>
-      <Popover
-        open={open}
+      <Menu
         anchorEl={anchorEl}
+        id='account-menu'
+        open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1
+            },
+            '&::before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0
+            }
+          }
         }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        {LANGUAGE_OPTIONS.map((lang: { lang: string; value: string }) => (
-          <StyledItemLanguage key={lang.value} onClick={() => handleOnChangeLang(lang.value)}>
-            <Typography>{lang.lang}</Typography>
-          </StyledItemLanguage>
+        {LANGUAGE_OPTIONS.map(lang => (
+          <MenuItem
+            selected={lang.value === i18n.language}
+            onClick={() => handleOnChangeLang(lang.value)}
+            key={lang.value}
+          >
+            {lang.lang}
+          </MenuItem>
         ))}
-      </Popover>
+      </Menu>
     </React.Fragment>
   )
 }
