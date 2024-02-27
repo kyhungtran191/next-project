@@ -69,9 +69,10 @@ const AuthProvider = ({ children }: Props) => {
   }, [])
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
+    setLoading(true)
     loginAuth({ email: params.email, password: params.password })
       .then(async response => {
-        console.log(response.data.access_token)
+        setLoading(false)
         params.rememberMe
           ? setLocalUserData(response.data.user, response.data.access_token, response.data.refresh_token)
           : null
@@ -83,6 +84,7 @@ const AuthProvider = ({ children }: Props) => {
       })
 
       .catch(err => {
+        setLoading(false)
         if (errorCallback) errorCallback(err)
       })
   }

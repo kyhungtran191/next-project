@@ -35,7 +35,6 @@ const LanguageDropdown = (props: TProps) => {
   }
 
   const { i18n } = useTranslation()
-  console.log('i18n', i18n)
 
   const handleOnChangeLang = (lang: string) => {
     i18n.changeLanguage(lang)

@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 // ** Next Imports
 import Head from 'next/head'
-import { Router } from 'next/router'
+import { Router, useRouter } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
@@ -74,10 +74,8 @@ const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
 
 export default function App(props: ExtendedAppProps) {
   const { Component, pageProps } = props
-
+  const router = useRouter()
   const { settings } = useSettings()
-
-  console.log('Component', Component)
 
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 

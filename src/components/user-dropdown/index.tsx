@@ -15,15 +15,21 @@ import IconifyIcon from '../Icon'
 import { useAuth } from 'src/hooks/useAuth'
 import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
+import { useRouter } from 'next/router'
+import { ROUTE_CONFIG } from 'src/configs/route'
 
 type TProps = {}
 const UserDropdown = (props: TProps) => {
+  //@hook
+  const router = useRouter()
+  const { t } = useTranslation()
+
+  //@state
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-
   const { user, logout } = useAuth()
-
   const open = Boolean(anchorEl)
 
+  //@handler
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
   }
@@ -31,7 +37,7 @@ const UserDropdown = (props: TProps) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const { t } = useTranslation()
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -90,11 +96,8 @@ const UserDropdown = (props: TProps) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>{user?.email}</MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+        <MenuItem onClick={() => router.push(`/${ROUTE_CONFIG.MY_PROFILE}`)}>
+          <Avatar /> {t('My profile')}
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>

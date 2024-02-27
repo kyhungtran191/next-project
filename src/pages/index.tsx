@@ -9,7 +9,6 @@ import LayoutNotApp from 'src/views/layout/LayoutNotApp'
 const Home = () => {
   // const theme = useTheme()
   const settings = useSettings()
-  console.log(settings)
   return (
     <>
       <Head>
@@ -23,3 +22,5 @@ const Home = () => {
 }
 export default Home
 Home.getLayout = (page: React.ReactNode) => <LayoutNotApp>{page}</LayoutNotApp>
+Home.guestGuard = false
+Home.authGuard = false

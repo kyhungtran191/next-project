@@ -12,7 +12,6 @@ const instanceAxios = axios.create({
 
 const handleRedirectLogin = (router: NextRouter, setUser: (data: UserDataType | null) => void) => {
   if (router.asPath !== '/') {
-    console.log(router.asPath !== '/')
     router.replace({
       pathname: '/login',
       query: { returnUrl: router.asPath }
@@ -78,7 +77,6 @@ const AxiosInterceptor: React.FC<TProps> = ({ children }) => {
     return config
   })
   instanceAxios.interceptors.response.use(response => {
-    console.log(response)
     return response
   })
   return <>{children}</>

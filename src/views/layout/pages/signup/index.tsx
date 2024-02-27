@@ -56,9 +56,7 @@ const SignUpPage: NextPage<TProps> = () => {
     mode: 'onBlur',
     resolver: yupResolver(schema)
   })
-  const onSubmit = (data: { email: string; password: string; confirm_password: string }) => {
-    console.log(data)
-  }
+  const onSubmit = (data: { email: string; password: string; confirm_password: string }) => {}
   return (
     <Box component='main' maxWidth='xs'>
       <Box

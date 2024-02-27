@@ -9,6 +9,9 @@ import IconButton from '@mui/material/IconButton'
 import IconifyIcon from 'src/components/Icon'
 import UserDropdown from 'src/components/user-dropdown'
 import LanguageDropdown from 'src/components/languge-dropdown'
+import { useAuth } from 'src/hooks/useAuth'
+import { Button } from '@mui/material'
+import { useRouter } from 'next/router'
 
 const drawerWidth: number = 240
 
@@ -43,6 +46,13 @@ export default function HorizontalLayout({
   toggleDrawer: () => void
   isHideMenu: boolean
 }) {
+  
+  //@Hooks
+  const { user } = useAuth()
+
+  //@Router
+  const router = useRouter()
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -72,7 +82,18 @@ export default function HorizontalLayout({
             Dashboard
           </Typography>
           <LanguageDropdown></LanguageDropdown>
-          <UserDropdown></UserDropdown>
+          {user ? (
+            <UserDropdown></UserDropdown>
+          ) : (
+            <Button
+              type='submit'
+              variant='contained'
+              sx={{ width: 'auto', backgroundColor: 'white', color: 'black' }}
+              onClick={() => router.push('/login')}
+            >
+              Sign In
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
