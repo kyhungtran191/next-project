@@ -1,18 +1,31 @@
 import { yupResolver } from '@hookform/resolvers/yup'
+import { FormHelperText, InputLabel } from '@mui/material'
 import { Avatar, Box, Button, CssBaseline, Grid, Icon, IconButton, Typography, useTheme } from '@mui/material'
+import { t } from 'i18next'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import IconifyIcon from 'src/components/Icon'
+import CustomSelect from 'src/components/custom-select'
+import FallbackSpinner from 'src/components/fall-back'
 import CustomTextField from 'src/components/text-field'
 import WrapperFileUpload from 'src/components/wrapper-file-upload'
-import { EMAIL_REG, PASSWORD_REG } from 'src/configs/regex'
+import { EMAIL_REG, NO_SPECIAL_CHARS_REG } from 'src/configs/regex'
+import { ROUTE_CONFIG } from 'src/configs/route'
+import { UserDataType } from 'src/contexts/types'
 import { useAuth } from 'src/hooks/useAuth'
+import { getAuthMe } from 'src/services/auth'
+import { AppDispatch, RootState } from 'src/stores'
+import { resetInitialState } from 'src/stores/apps/auth'
+import { updateAuthMeAsync } from 'src/stores/apps/auth/action'
+import { convertBase64, separationFullName, toFullName } from 'src/utils'
 import * as yup from 'yup'
 
-type TProps = {}
 type TDefaultValue = {
   email: string
   address: string
@@ -21,6 +34,7 @@ type TDefaultValue = {
   role: string
   fullName: string
 }
+
 const defaultValues: TDefaultValue = {
   email: '',
   address: '',
@@ -29,9 +43,23 @@ const defaultValues: TDefaultValue = {
   role: '',
   fullName: ''
 }
+
 const MyProfilePage = () => {
   //@State
   const [avatar, setAvatar] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [isDisabledRole, setIsDisabledRole] = useState(false)
+  const [optionRoles, setOptionRoles] = useState<{ label: string; value: string }[]>([])
+  const [optionCities, setOptionCities] = useState<{ label: string; value: string }[]>([])
+  const [roleID, setRoleID] = useState('')
+
+  //@Hooks
+  const router = useRouter()
+  const { i18n } = useTranslation()
+  const dispatch: AppDispatch = useDispatch()
+  const { isErrorUpdateMe, isLoading, isSuccessUpdateMe, messageUpdateMe, typeError } = useSelector(
+    (state: RootState) => state.auth
+  )
 
   //@Config
   const theme = useTheme()
@@ -45,8 +73,8 @@ const MyProfilePage = () => {
   })
 
   const {
-    register,
     handleSubmit,
+    reset,
     control,
     formState: { errors }
   } = useForm({
@@ -54,13 +82,76 @@ const MyProfilePage = () => {
     mode: 'onBlur',
     resolver: yupResolver(schema)
   })
-  const handleUploadAvatar = () => {}
-  const onSubmit = (data: { email: string; password: string; confirm_password: string }) => {}
 
-  const { user } = useAuth()
+  const handleUploadAvatar = async (file: File) => {
+    const base64 = await convertBase64(file)
+    setAvatar(base64 as string)
+  }
+
+  const fetchGetAuthMe = async () => {
+    setLoading(true)
+    await getAuthMe()
+      .then(async response => {
+        setLoading(false)
+        if (response.data) {
+          const userData = response.data
+          setRoleID(userData?.role?.id)
+          setAvatar(userData?.avatar || '')
+          reset({
+            email: userData?.email,
+            address: '',
+            city: ' ',
+            phoneNumber: userData.phoneNumber,
+            fullName: toFullName(userData?.lastName, userData?.middleName, userData?.firstName, i18n.language),
+            role: userData?.role.name
+          })
+        }
+      })
+      .catch(() => {
+        setLoading(false)
+        if (!router.pathname.includes('login')) {
+          router.replace('/login')
+        }
+      })
+  }
+
+  useEffect(() => {
+    if (messageUpdateMe) {
+      if (isErrorUpdateMe) {
+        toast.error(messageUpdateMe)
+      } else if (isSuccessUpdateMe) {
+        toast.success(messageUpdateMe)
+        fetchGetAuthMe()
+      }
+      dispatch(resetInitialState())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccessUpdateMe, isErrorUpdateMe, messageUpdateMe])
+
+  useEffect(() => {
+    fetchGetAuthMe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language])
+
+  function handleSubmitForm(data: any) {
+    const { firstName, lastName, middleName } = separationFullName(data.fullName, i18n.language)
+    dispatch(
+      updateAuthMeAsync({
+        email: data.email,
+        firstName,
+        lastName,
+        middleName,
+        role: roleID,
+        phoneNumber: data.phoneNumber,
+        avatar: avatar,
+        address: data.address
+      })
+    )
+  }
   return (
     <>
-      <form autoComplete='off' noValidate>
+      {isLoading && <FallbackSpinner></FallbackSpinner>}
+      <form autoComplete='off' noValidate onSubmit={handleSubmit(handleSubmitForm)}>
         <Grid container>
           <Grid
             container
@@ -138,6 +229,7 @@ const MyProfilePage = () => {
                         onChange={onChange}
                         onBlur={onBlur}
                         value={value}
+                        disabled
                         placeholder={'Enter_your_email'}
                         error={Boolean(errors?.email)}
                         helperText={errors?.email?.message}
@@ -147,7 +239,7 @@ const MyProfilePage = () => {
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  {/* {!isDisabledRole && (
+                  {!isDisabledRole && (
                     <Controller
                       control={control}
                       rules={{
@@ -191,28 +283,7 @@ const MyProfilePage = () => {
                       )}
                       name='role'
                     />
-                  )} */}
-
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <CustomTextField
-                        required
-                        fullWidth
-                        label={'Email'}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        placeholder={'Enter_your_email'}
-                        error={Boolean(errors?.email)}
-                        helperText={errors?.email?.message}
-                      />
-                    )}
-                    name='email'
-                  />
+                  )}
                 </Grid>
               </Grid>
             </Box>
@@ -265,7 +336,7 @@ const MyProfilePage = () => {
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                  {/* <Controller
+                  <Controller
                     name='city'
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
@@ -304,26 +375,6 @@ const MyProfilePage = () => {
                         )}
                       </Box>
                     )}
-                  /> */}
-                  <Controller
-                    control={control}
-                    rules={{
-                      required: true
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                      <CustomTextField
-                        required
-                        fullWidth
-                        label={'Email'}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                        value={value}
-                        placeholder={'Enter_your_email'}
-                        error={Boolean(errors?.email)}
-                        helperText={errors?.email?.message}
-                      />
-                    )}
-                    name='email'
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>

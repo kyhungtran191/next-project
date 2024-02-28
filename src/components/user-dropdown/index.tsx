@@ -1,6 +1,4 @@
 // ** Icon Imports
-import { Icon, IconProps } from '@iconify/react'
-import { TextFieldProps, TextField, styled } from '@mui/material'
 import Box from '@mui/material/Box'
 import Avatar from '@mui/material/Avatar'
 import Menu from '@mui/material/Menu'
@@ -17,7 +15,38 @@ import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/router'
 import { ROUTE_CONFIG } from 'src/configs/route'
+import { toFullName } from 'src/utils'
+import i18n from 'src/configs/i18n'
+import { Badge, styled } from '@mui/material'
 
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    backgroundColor: '#44b700',
+    color: '#44b700',
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    '&::after': {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      animation: 'ripple 1.2s infinite ease-in-out',
+      border: '1px solid currentColor',
+      content: '""'
+    }
+  },
+  '@keyframes ripple': {
+    '0%': {
+      transform: 'scale(.8)',
+      opacity: 1
+    },
+    '100%': {
+      transform: 'scale(2.4)',
+      opacity: 0
+    }
+  }
+}))
 type TProps = {}
 const UserDropdown = (props: TProps) => {
   //@hook
@@ -50,13 +79,15 @@ const UserDropdown = (props: TProps) => {
             aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>
-              {user?.avatar ? (
-                <Image src={user?.avatar || ' '} alt='user'></Image>
-              ) : (
-                <IconifyIcon icon='ph:user'></IconifyIcon>
-              )}
-            </Avatar>
+            <StyledBadge overlap='circular' anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant='dot'>
+              <Avatar sx={{ width: 32, height: 32 }}>
+                {user?.avatar ? (
+                  <Image src={user?.avatar || ' '} alt='user' width={32} height={32}></Image>
+                ) : (
+                  <IconifyIcon icon='ph:user'></IconifyIcon>
+                )}
+              </Avatar>
+            </StyledBadge>
           </IconButton>
         </Tooltip>
       </Box>
@@ -95,11 +126,33 @@ const UserDropdown = (props: TProps) => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>{user?.email}</MenuItem>
-        <MenuItem onClick={() => router.push(`/${ROUTE_CONFIG.MY_PROFILE}`)}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mx: 4, pb: 2, px: 2 }}>
+          <StyledBadge overlap='circular' anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} variant='dot'>
+            <Avatar sx={{ width: 32, height: 32 }}>
+              {user?.avatar ? (
+                <Image src={user?.avatar || ' '} alt='user' width={32} height={32}></Image>
+              ) : (
+                <IconifyIcon icon='ph:user'></IconifyIcon>
+              )}
+            </Avatar>
+          </StyledBadge>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Typography>
+              {toFullName(
+                user?.lastName as string,
+                user?.middleName as string,
+                user?.firstName as string,
+                i18n.language
+              )}
+            </Typography>
+            <Typography>{user?.role.name}</Typography>
+          </Box>
+        </Box>
+        <Divider></Divider>
+        <MenuItem onClick={() => router.push(`${ROUTE_CONFIG.MY_PROFILE}`)}>
           <Avatar /> {t('My profile')}
         </MenuItem>
-        <Divider />
+
         <MenuItem onClick={handleClose}>
           <ListItemIcon>{/* <PersonAdd fontSize='small' /> */}</ListItemIcon>
           Add another account

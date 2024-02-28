@@ -74,7 +74,11 @@ const AuthProvider = ({ children }: Props) => {
       .then(async response => {
         setLoading(false)
         params.rememberMe
-          ? setLocalUserData(response.data.user, response.data.access_token, response.data.refresh_token)
+          ? setLocalUserData(
+              JSON.stringify(response.data.user),
+              response.data.access_token,
+              response.data.refresh_token
+            )
           : null
         const returnUrl = router.query.returnUrl
         setUser({ ...response.data.user })
