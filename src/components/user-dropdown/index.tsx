@@ -145,7 +145,7 @@ const UserDropdown = (props: TProps) => {
                 i18n.language
               )}
             </Typography>
-            <Typography>{user?.role.name}</Typography>
+            <Typography>{user?.role?.name}</Typography>
           </Box>
         </Box>
         <Divider></Divider>
@@ -157,9 +157,14 @@ const UserDropdown = (props: TProps) => {
           <ListItemIcon>{/* <PersonAdd fontSize='small' /> */}</ListItemIcon>
           Add another account
         </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            router.push(ROUTE_CONFIG.CHANGE_PASSWORD)
+            handleClose()
+          }}
+        >
           <ListItemIcon>{/* <Settings fontSize='small' /> */}</ListItemIcon>
-          Settings
+          Change Password
         </MenuItem>
         <MenuItem onClick={logout}>
           <ListItemIcon>{/* <Logout fontSize='small' /> */}</ListItemIcon>

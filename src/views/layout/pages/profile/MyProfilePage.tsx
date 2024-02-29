@@ -100,14 +100,16 @@ const MyProfilePage = () => {
             city: ' ',
             phoneNumber: userData.phoneNumber,
             fullName: toFullName(userData?.lastName, userData?.middleName, userData?.firstName, i18n.language),
-            role: userData?.role.name
+            role: userData?.role?.name
           })
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err)
         setLoading(false)
         if (!router.pathname.includes('login')) {
           router.replace('/login')
+          console.log(1)
         }
       })
   }

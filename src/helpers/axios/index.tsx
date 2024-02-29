@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BASE_URL, CONFIG_API } from 'src/configs/api'
-import { clearLocalUserData, getLocalUserData } from '../storage'
+import { clearLocalUserData, getLocalUserData, setLocalUserData } from '../storage'
 import { jwtDecode } from 'jwt-decode'
 import { NextRouter, useRouter } from 'next/router'
 import { useAuth } from 'src/hooks/useAuth'
@@ -29,14 +29,13 @@ type TProps = {
 const AxiosInterceptor: React.FC<TProps> = ({ children }) => {
   const router = useRouter()
 
-  const { accessToken, refreshToken } = getLocalUserData()
-
-  const { setUser } = useAuth()
+  const { setUser, user } = useAuth()
 
   instanceAxios.interceptors.request.use(async function (config) {
+    const { accessToken, refreshToken } = getLocalUserData()
     if (accessToken) {
       const decoded: any = jwtDecode(accessToken)
-      if (decoded.exp < Date.now() / 1000) {
+      if (decoded.exp > Date.now() / 1000) {
         config.headers.authorization = `Bearer ${accessToken}`
         return config
       } else {
@@ -58,6 +57,7 @@ const AxiosInterceptor: React.FC<TProps> = ({ children }) => {
                   const newAccessToken = res.data.data.access_token
                   if (newAccessToken) {
                     config.headers.authorization = `Bearer ${newAccessToken}`
+                    setLocalUserData(JSON.stringify(user), newAccessToken, refreshToken)
                   } else {
                     handleRedirectLogin(router, setUser)
                   }

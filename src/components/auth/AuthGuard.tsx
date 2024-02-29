@@ -14,6 +14,7 @@ interface AuthGuardProps {
 const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props
   const authContext = useAuth()
+  console.log(authContext.user)
   const router = useRouter()
   useEffect(() => {
     if (!router.isReady) {
@@ -24,6 +25,7 @@ const AuthGuard = (props: AuthGuardProps) => {
       !window.localStorage.getItem(ACCESS_TOKEN) &&
       !window.localStorage.getItem(USER_DATA)
     ) {
+      console.log(1)
       if (router.asPath !== '/' && router.asPath !== '/login') {
         router.replace({
           pathname: '/login',

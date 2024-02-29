@@ -9,4 +9,4 @@ const Profile: NextPage<TProps> = () => {
 }
 export default Profile
 Profile.getLayout = (page: React.ReactNode) => <LayoutNotApp>{page}</LayoutNotApp>
-Profile.authGuard = true
+Profile.authGuard = false
