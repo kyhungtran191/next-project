@@ -1,9 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormHelperText, InputLabel } from '@mui/material'
-import { Avatar, Box, Button, CssBaseline, Grid, Icon, IconButton, Typography, useTheme } from '@mui/material'
+import { Avatar, Box, Button, Grid, IconButton, useTheme } from '@mui/material'
 import { t } from 'i18next'
 import { NextPage } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -12,13 +11,11 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import IconifyIcon from 'src/components/Icon'
 import CustomSelect from 'src/components/custom-select'
-import FallbackSpinner from 'src/components/fall-back'
+import Spinner from 'src/components/spinner'
 import CustomTextField from 'src/components/text-field'
 import WrapperFileUpload from 'src/components/wrapper-file-upload'
-import { EMAIL_REG, NO_SPECIAL_CHARS_REG } from 'src/configs/regex'
-import { ROUTE_CONFIG } from 'src/configs/route'
-import { UserDataType } from 'src/contexts/types'
-import { useAuth } from 'src/hooks/useAuth'
+import { EMAIL_REG } from 'src/configs/regex'
+
 import { getAuthMe } from 'src/services/auth'
 import { AppDispatch, RootState } from 'src/stores'
 import { resetInitialState } from 'src/stores/apps/auth'
@@ -150,7 +147,7 @@ const MyProfilePage = () => {
   }
   return (
     <>
-      {isLoading && <FallbackSpinner></FallbackSpinner>}
+      {(loading || isLoading) && <Spinner></Spinner>}
       <form autoComplete='off' noValidate onSubmit={handleSubmit(handleSubmitForm)}>
         <Grid container>
           <Grid
