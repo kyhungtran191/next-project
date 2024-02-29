@@ -8,12 +8,12 @@ export const VerticalItems = [
       {
         title: 'Người dùng',
         icon: 'material-symbols:group-outline',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.SYSTEM.USER
+        path: ROUTE_CONFIG.SYSTEM.USER
       },
       {
         title: 'Nhóm vai trò',
         icon: 'icon-park-outline:permissions',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.SYSTEM.ROLE
+        path: ROUTE_CONFIG.SYSTEM.ROLE
       }
     ]
   },
@@ -23,22 +23,22 @@ export const VerticalItems = [
     children: [
       {
         title: 'Danh Sách Sản Phẩm',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.PRODUCT.MANAGER_PRODUCT,
+        path: ROUTE_CONFIG.MANAGE_PRODUCT.PRODUCT,
         icon: 'icon-park-outline:ad-product'
       },
       {
         title: 'Danh Mục Sản Phẩm',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.PRODUCT.MANGER_TYPE_PRODUCT,
+        path: ROUTE_CONFIG.MANAGE_PRODUCT.MANAGE_TYPE_PRODUCT,
         icon: 'material-symbols:category-outline'
       },
       {
         title: 'Danh Sách Đơn hàng',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.PRODUCT.MANAGER_ORDER,
+        path: ROUTE_CONFIG.MANAGE_PRODUCT.MANAGE_ORDER,
         icon: 'lets-icons:order'
       },
       {
         title: 'Danh Sách Đánh Giá',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.PRODUCT.MANGER_REVIEW,
+        path: ROUTE_CONFIG.MANAGE_PRODUCT.MANAGE_REVIEW,
         icon: 'material-symbols:rate-review-rounded'
       }
     ]
@@ -49,17 +49,17 @@ export const VerticalItems = [
     children: [
       {
         title: 'Thành Phố',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.SETTINGS.CITY,
+        path: ROUTE_CONFIG.SETTINGS.CITY,
         icon: 'mdi:city'
       },
       {
         title: 'Phương Thức Giao Hàng',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.SETTINGS.DELIVERY_TYPE,
+        path: ROUTE_CONFIG.SETTINGS.DELIVERY_TYPE,
         icon: 'fa-solid:shipping-fast'
       },
       {
         title: 'Phương Thức Thanh Toán',
-        path: ROUTE_CONFIG.MANAGER_SYSTEM.SETTINGS.PAYMENT_TYPE,
+        path: ROUTE_CONFIG.SETTINGS.PAYMENT_TYPE,
         icon: 'mdi:payment'
       }
     ]
