@@ -16,7 +16,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <HorizontalLayout open={open} toggleDrawer={toggleDrawer}></HorizontalLayout>
+      <HorizontalLayout isHideMenu={false} open={open} toggleDrawer={toggleDrawer}></HorizontalLayout>
       <VerticalLayout open={open} toggleDrawer={toggleDrawer}></VerticalLayout>
       <Box
         component='main'

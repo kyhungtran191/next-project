@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import { Collapse, IconButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material'
+import { Collapse, ListItemIcon, ListItemText, ListSubheader, useTheme } from '@mui/material'
 import List from '@mui/material/List'
 import { ListItemButton } from '@mui/material'
 import IconifyIcon from 'src/components/Icon'
 import { VerticalItems } from 'src/configs/layout'
+import { useRouter } from 'next/router'
+import { hexToRGBA } from 'src/utils/hex-to-rgba'
 
 type TProps = {
   open: boolean
@@ -15,7 +16,9 @@ const RecursiveListItem = ({
   level,
   disabled,
   openItems,
-  setOpenItems
+  setOpenItems,
+  setActivePath,
+  activePath
 }: {
   items: any
   level: number
@@ -26,10 +29,23 @@ const RecursiveListItem = ({
       [key: string]: boolean
     }>
   >
+  setActivePath: React.Dispatch<React.SetStateAction<string | null>>
+  activePath: string | null
 }) => {
+  const theme = useTheme()
+  const router = useRouter()
+
   const handleClick = (title: string) => {
     if (!disabled) {
       setOpenItems(prev => ({ ...prev, [title]: !prev[title] }))
+    }
+  }
+
+  const handleSelectItem = (path: string) => {
+    setActivePath(path)
+    console.log(path)
+    if (path) {
+      router.push(path)
     }
   }
 
@@ -38,10 +54,20 @@ const RecursiveListItem = ({
       {items?.map((item: any, index: number) => (
         <React.Fragment key={item.title}>
           <ListItemButton
-            sx={{ padding: `${level * 20}px` }}
+            sx={{
+              padding: `8px 10px 8px ${level * (level === 1 ? 28 : 20)}px`,
+              margin: '1px 0',
+              backgroundColor:
+                (activePath && item.path === activePath) || !!openItems[item.title]
+                  ? `${hexToRGBA(theme.palette.primary.main, 0.08)} !important`
+                  : theme.palette.background.paper
+            }}
             onClick={() => {
               if (item.children) {
                 handleClick(item.title)
+              }
+              if (item.path) {
+                handleSelectItem(item.path)
               }
             }}
           >
@@ -56,6 +82,8 @@ const RecursiveListItem = ({
                 <RecursiveListItem
                   disabled={disabled}
                   setOpenItems={setOpenItems}
+                  activePath={activePath}
+                  setActivePath={setActivePath}
                   openItems={openItems}
                   items={item.children}
                   level={level + 1}
@@ -71,6 +99,7 @@ const RecursiveListItem = ({
 
 export default function ListVerticalLayout({ open }: TProps) {
   const [openItems, setOpenItems] = React.useState<{ [key: string]: boolean }>({})
+  const [activePath, setActivePath] = React.useState<null | string>('')
 
   React.useEffect(() => {
     if (!open) {
@@ -88,6 +117,8 @@ export default function ListVerticalLayout({ open }: TProps) {
     >
       <RecursiveListItem
         setOpenItems={setOpenItems}
+        activePath={activePath}
+        setActivePath={setActivePath}
         openItems={openItems}
         disabled={!open}
         items={VerticalItems}
