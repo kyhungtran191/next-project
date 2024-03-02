@@ -149,6 +149,9 @@ const UserDropdown = (props: TProps) => {
           </Box>
         </Box>
         <Divider></Divider>
+        <MenuItem onClick={() => router.push(`${ROUTE_CONFIG.DASHBOARD}`)}>
+          <Avatar /> {t('Manager System')}
+        </MenuItem>
         <MenuItem onClick={() => router.push(`${ROUTE_CONFIG.MY_PROFILE}`)}>
           <Avatar /> {t('My profile')}
         </MenuItem>
