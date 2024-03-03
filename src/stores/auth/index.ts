@@ -1,12 +1,10 @@
 // ** Redux Imports
 import { Dispatch } from 'redux'
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 // ** Axios Imports
-import axios from 'axios'
 import { changePasswordMeAsync, registerAuthAsync, updateAuthMeAsync } from './action'
 import { type Action } from '@reduxjs/toolkit'
-import { useEffect } from 'react'
 
 interface DataParams {
   q: string

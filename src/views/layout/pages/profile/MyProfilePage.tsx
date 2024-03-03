@@ -18,8 +18,8 @@ import { EMAIL_REG } from 'src/configs/regex'
 
 import { getAuthMe } from 'src/services/auth'
 import { AppDispatch, RootState } from 'src/stores'
-import { resetInitialState } from 'src/stores/apps/auth'
-import { updateAuthMeAsync } from 'src/stores/apps/auth/action'
+import { resetInitialState } from 'src/stores/auth'
+import { updateAuthMeAsync } from 'src/stores/auth/action'
 import { convertBase64, separationFullName, toFullName } from 'src/utils'
 import * as yup from 'yup'
 

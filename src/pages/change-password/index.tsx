@@ -36,8 +36,8 @@ import FallbackSpinner from 'src/components/fall-back'
 // ** Others
 import toast from 'react-hot-toast'
 import { useAuth } from 'src/hooks/useAuth'
-import { changePasswordMeAsync } from 'src/stores/apps/auth/action'
-import { resetInitialState } from 'src/stores/apps/auth'
+import { changePasswordMeAsync } from 'src/stores/auth/action'
+import { resetInitialState } from 'src/stores/auth'
 
 type TProps = {}
 
